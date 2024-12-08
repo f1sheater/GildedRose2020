@@ -32,4 +32,3 @@ public class Item {
 		this.quality = quality;
 	}
 }
-

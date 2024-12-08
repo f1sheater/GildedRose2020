@@ -2,6 +2,7 @@ package fi.oulu.tol.sqat.tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -155,5 +156,34 @@ public class GildedRoseTest {
 		int sellIn = items.get(0).getSellIn();
 		
 		assertEquals("Failed quality for Sulfuras", 4, sellIn);
+	}
+	
+	@Test
+	public void test_UpdateQualityLoops() {
+		GildedRose inn = new GildedRose();
+		inn.oneDay(); // 0 loops
+		
+		assertEquals("Failed at 0 loops", new ArrayList<Item>(), inn.getItems());
+		
+		inn.setItem(new Item("+5 Dexterity Vest", 10, 20));
+		inn.setItem(new Item("Aged Brie", 2, 0));
+		inn.oneDay(); // 2 loops
+		
+		List<Item> items = inn.getItems();
+		
+		assertEquals("Failed at 2 loops", 9, items.get(0).getSellIn());
+		assertEquals("Failed at 2 loops", 19, items.get(0).getQuality());
+		assertEquals("Failed at 2 loops", 1, items.get(1).getSellIn());
+		assertEquals("Failed at 2 loops", 1, items.get(1).getQuality());
+		
+		inn.setItem(new Item("Elixir of the Mongoose", 5, 7));
+		inn.oneDay(); // 3 loops
+		
+		assertEquals("Failed at 3 loops", 8, items.get(0).getSellIn());
+		assertEquals("Failed at 3 loops", 18, items.get(0).getQuality());
+		assertEquals("Failed at 3 loops", 0, items.get(1).getSellIn());
+		assertEquals("Failed at 3 loops", 2, items.get(1).getQuality());
+		assertEquals("Failed at 3 loops", 4, items.get(2).getSellIn());
+		assertEquals("Failed at 3 loops", 6, items.get(2).getQuality());
 	}
 }
