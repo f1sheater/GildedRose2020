@@ -84,6 +84,21 @@ public class GildedRoseTest {
 	}
 	
 	@Test
+	public void test_BrieAgingNegative() {
+		GildedRose inn = new GildedRose();
+		inn.setItem(new Item("Aged Brie", 3, 10));
+		inn.oneDay();
+		inn.oneDay();
+		inn.oneDay();
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		int quality = items.get(0).getQuality();
+		
+		assertEquals("Failed quality for Brie", 15, quality);
+	}
+	
+	@Test
 	public void test_BrieAgingOver50() {
 		GildedRose inn = new GildedRose();
 		inn.setItem(new Item("Aged Brie", 1, 47));
@@ -131,6 +146,18 @@ public class GildedRoseTest {
 	}
 	
 	@Test
+	public void test_BackstageQualityAt50() {
+		GildedRose inn = new GildedRose();
+		inn.setItem(new Item("Backstage passes to a TAFKAL80ETC concert", 2, 49));
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		int quality = items.get(0).getQuality();
+		
+		assertEquals("Failed quality for Backstage pass", 50, quality);
+	}
+	
+	@Test
 	public void test_SulfurasQuality() {
 		GildedRose inn = new GildedRose();
 		inn.setItem(new Item("Sulfuras, Hand of Ragnaros", 4, 80));
@@ -155,7 +182,7 @@ public class GildedRoseTest {
 		List<Item> items = inn.getItems();
 		int sellIn = items.get(0).getSellIn();
 		
-		assertEquals("Failed quality for Sulfuras", 4, sellIn);
+		assertEquals("Failed sellIn for Sulfuras", 4, sellIn);
 	}
 	
 	@Test
